@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudySync — Academic Performance Tracker</title>
+  <meta name="description" content="Track weighted averages, plan revision, count down to exams and organise study resources." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233b3fd8'/%3E%3Cpath d='M9 20l5 4 9-14' stroke='white' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <!-- ============ AUTH SCREEN ============ -->
+  <section id="auth-screen" class="auth" hidden>
+    <div class="auth-hero">
+      <div class="brand brand-lg"><span class="brand-mark">✓</span> StudySync</div>
+      <h1>Know exactly where you stand — and what to study next.</h1>
+      <ul class="auth-points">
+        <li><strong>Weighted averages</strong> with subject coefficients and assessment multipliers</li>
+        <li><strong>Revision planner</strong> with priorities and due dates</li>
+        <li><strong>Live exam countdowns</strong> so nothing sneaks up on you</li>
+        <li><strong>Resource library</strong> for links and files, sorted by category</li>
+      </ul>
+    </div>
+    <div class="auth-card card">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-auth-tab="login" role="tab">Sign in</button>
+        <button class="tab" data-auth-tab="register" role="tab">Create account</button>
+      </div>
+      <form id="login-form" class="form" novalidate>
+        <label>Email<input type="email" name="email" autocomplete="email" required value="demo@studysync.app" /></label>
+        <label>Password<input type="password" name="password" autocomplete="current-password" required value="demo1234" /></label>
+        <p class="form-error" aria-live="polite"></p>
+        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+        <p class="hint">Demo account pre-filled: <code>demo@studysync.app</code> / <code>demo1234</code></p>
+      </form>
+      <form id="register-form" class="form" novalidate hidden>
+        <label>Full name<input type="text" name="full_name" autocomplete="name" required maxlength="100" /></label>
+        <label>Email<input type="email" name="email" autocomplete="email" required /></label>
+        <label>Password <span class="muted">(min. 8 characters)</span><input type="password" name="password" autocomplete="new-password" minlength="8" required /></label>
+        <p class="form-error" aria-live="polite"></p>
+        <button class="btn btn-primary btn-block" type="submit">Create account</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ APP SHELL ============ -->
+  <div id="app-shell" class="shell" hidden>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="brand-mark">✓</span> StudySync</div>
+      <nav class="nav" aria-label="Main">
+        <a href="#/dashboard" data-route="dashboard"><span class="nav-ico">◧</span>Dashboard</a>
+        <a href="#/grades" data-route="grades"><span class="nav-ico">∑</span>Grades &amp; GPA</a>
+        <a href="#/planner" data-route="planner"><span class="nav-ico">☰</span>Planner</a>
+        <a href="#/exams" data-route="exams"><span class="nav-ico">◷</span>Exams</a>
+        <a href="#/resources" data-route="resources"><span class="nav-ico">❒</span>Resources</a>
+      </nav>
+      <div class="sidebar-foot">
+        <button class="user-chip" id="user-chip" title="Account settings">
+          <span class="avatar" id="user-avatar">?</span>
+          <span class="user-meta"><strong id="user-name">—</strong><small id="user-email"></small></span>
+        </button>
+        <div class="sidebar-actions">
+          <button class="btn btn-ghost btn-sm" id="theme-toggle" title="Toggle dark mode">◐ Theme</button>
+          <button class="btn btn-ghost btn-sm" id="logout-btn">Sign out</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menu-btn" aria-label="Open menu">☰</button>
+        <div>
+          <h1 id="page-title">Dashboard</h1>
+          <p id="page-sub" class="muted"></p>
+        </div>
+        <div class="topbar-actions" id="page-actions"></div>
+      </header>
+      <main id="view" class="view" tabindex="-1"></main>
+    </div>
+    <div class="scrim" id="scrim" hidden></div>
+  </div>
+
+  <!-- ============ MODAL ============ -->
+  <dialog id="modal" class="modal">
+    <form method="dialog" class="modal-inner" id="modal-form" novalidate>
+      <header class="modal-head">
+        <h2 id="modal-title">Edit</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Close">✕</button>
+      </header>
+      <div class="modal-body" id="modal-body"></div>
+      <p class="form-error" id="modal-error" aria-live="polite"></p>
+      <footer class="modal-foot">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="modal-submit">Save</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
